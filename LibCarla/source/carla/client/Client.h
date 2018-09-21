@@ -6,12 +6,13 @@
 
 #pragma once
 
+#include "carla/Memory.h"
 #include "carla/NonCopyable.h"
 #include "carla/Version.h"
 #include "carla/client/Control.h"
-#include "carla/client/Memory.h"
 #include "carla/client/Transform.h"
 #include "carla/rpc/Client.h"
+#include "carla/sensor/Deserializer.h"
 #include "carla/streaming/Client.h"
 
 #include <string>
@@ -50,8 +51,10 @@ namespace client {
     }
 
     template <typename Functor>
-    void SubscribeToStream(const streaming::Token &token, Functor &&callback) {
-      _streaming_client.Subscribe(token, std::forward<Functor>(callback));
+    void SubscribeToStream(const streaming::Token &token, Functor callback) {
+      _streaming_client.Subscribe(token, [callback](auto buffer) {
+        callback(sensor::Deserializer::Deserialize(std::move(buffer)));
+      });
     }
 
     std::string GetClientVersion() const {
