@@ -77,8 +77,9 @@ static int32 RoundToMilliseconds(float Seconds)
 
 void ACarlaPlayerState::UpdateTimeStamp(float DeltaSeconds)
 {
-  FrameNumber = GFrameCounter;
+	static const auto offset = FPlatformTime::Seconds();
+	FrameNumber = GFrameCounter;
   SimulationStepInSeconds = DeltaSeconds;
-  PlatformTimeStamp = RoundToMilliseconds(FPlatformTime::Seconds());
+  PlatformTimeStamp = RoundToMilliseconds(FPlatformTime::Seconds() - offset);
   GameTimeStamp += RoundToMilliseconds(DeltaSeconds);
 }

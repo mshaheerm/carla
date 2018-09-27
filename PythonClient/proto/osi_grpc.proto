@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+
+import "osi_groundtruth.proto";
+
+package osi3;
+service Groundtruthdata {
+   rpc ProcessGThost(GroundTruth) returns(Empty) {}
+   rpc ProcessGroundTruth(GroundTruth) returns(Empty){}
+   rpc SayHello (HelloRequest) returns (HelloReply) {}
+
+}
+//message trial{
+//	GroundTruth gt = 1;
+//}
+
+message Empty {
+  string result = 1;
+}
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
